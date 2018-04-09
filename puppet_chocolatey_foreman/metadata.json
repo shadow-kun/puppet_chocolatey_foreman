@@ -1,0 +1,18 @@
+{
+  "name": "shadowkun-puppet_chocolatey_foreman",
+  "version": "0.1.0",
+  "author": "Daniel Johnson",
+  "summary": "Installs chocolatey modules while ensuring that it is only run on windows devices.",
+  "license": "Apache-2.0",
+  "source": "https://github.com/shadow-kun/puppet_chocolatey_foreman",
+  "project_page": "https://github.com/shadow-kun/puppet_chocolatey_foreman",
+  "issues_url": "https://github.com/shadow-kun/puppet_chocolatey_foreman/issues",
+  "dependencies": [
+    {
+      "name": "puppetlabs-stdlib",
+      "version_requirement": ">= 1.0.0"
+    }
+  ],
+  "data_provider": null
+}
+
