@@ -71,7 +71,7 @@ class puppet_chocolatey_foreman (
           $package_latest.each
           |Integer $p_latest_index, String $p_latest_value| {
             package { $p_latest_value:
-              ensure   => latest,
+              ensure   => installed,
               provider => chocolatey,
             }
           }
@@ -83,7 +83,7 @@ class puppet_chocolatey_foreman (
           $package_absent.each
           |Integer $p_absent_index, String $p_absent_value| {
             package { $p_absent_value:
-                ensure   => absent,
+                ensure   => installed,
                 provider => chocolatey,
             }
           }
