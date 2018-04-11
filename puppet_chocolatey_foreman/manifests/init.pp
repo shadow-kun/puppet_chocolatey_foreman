@@ -1,46 +1,57 @@
 # Class: puppet_chocolatey_foreman
 # ===========================
 #
-# Full description of class puppet_chocolatey_foreman here.
+# This module is designed to take array of chocolatey applications as Parameters
+# and puppet will either install, keep updated, or remove them. It is designed
+# to be used in conjunction with foreman with smart parameter input, though can
+# be used on its own as well.
 #
 # Parameters
 # ----------
 #
-# Document parameters here.
+# * `package_install`
+# This parameter can be either entered as a single string or as an array. It
+# will then ensure that each package is installed via chocolatey. Once a package
+# is installed it will not automatically update it.
+# Default value is an empty string.
 #
-# * `sample parameter`
-# Explanation of what this parameter affects and what it defaults to.
-# e.g. "Specify one or more upstream ntp servers as an array."
+# * `package_latest`
+# This parameter can be either entered as a single string or as an array. It
+# will then ensure that each package is installed via chocolatey along with
+# updating the package to the latest version if required.
+# Default value is an empty string.
+#
+# * `package_absent`
+# This parameter can be either entered as a single string or as an array. It
+# will then ensure that each package is removed from the system via chocolatey.
+# Default value is an empty string.
 #
 # Variables
 # ----------
 #
-# Here you should define a list of variables that this module would require.
-#
-# * `sample variable`
-#  Explanation of how this variable affects the function of this class and if
-#  it has a default. e.g. "The parameter enc_ntp_servers must be set by the
-#  External Node Classifier as a comma separated list of hostnames." (Note,
-#  global variables should be avoided in favor of class parameters as
-#  of Puppet 2.6.)
+# * `$facts['os']['family']`
+# This variable uses the family OS variable to ensure that chocolatey Packages
+# are only run on a windows device.
 #
 # Examples
 # --------
 #
 # @example
 #    class { 'puppet_chocolatey_foreman':
-#      servers => [ 'pool.ntp.org', 'ntp.local.company.com' ],
+#      package_install => [ 'adobereader', 'firefox' ],
+#      package_latest => 'notepadplusplus',
+#      package_absent => [ 'safari' ],
 #    }
 #
 # Authors
 # -------
 #
-# Author Name <author@domain.com>
+# Shadow Reaper <shadowreaper@shadowreaper.net>
 #
 # Copyright
 # ---------
 #
-# Copyright 2018 Your name here, unless otherwise noted.
+# Copyright 2018 ZoR Systems, unless otherwise noted.
 #
 class puppet_chocolatey_foreman (
     $package_install = '',
