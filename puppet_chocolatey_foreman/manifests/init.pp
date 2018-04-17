@@ -26,6 +26,16 @@
 # will then ensure that each package is removed from the system via chocolatey.
 # Default value is an empty string.
 #
+# * `chocolatey_internal_server`
+#
+# This parameter can be either left blank or a value can be entered pointing to
+# a chocolatey server. This to allow packages to be hosted internally which is
+# the preferred method of chocolatey. Default value is an empty string.
+#
+# * `chocolatey_internal_only`
+# This boolean parameter is either true or false to state if chocolatey is to
+# use the internal server only. The default value is false.
+#
 # Variables
 # ----------
 #
@@ -41,6 +51,8 @@
 #      package_install => [ 'adobereader', 'firefox' ],
 #      package_latest => 'notepadplusplus',
 #      package_absent => [ 'safari' ],
+#      chocolatey_internal_server => 'http://chocolatey.server.lan',
+#      chocolatey_internal_only => false,
 #    }
 #
 # Authors
@@ -54,6 +66,8 @@
 # Copyright 2018 ZoR Systems, unless otherwise noted.
 #
 class puppet_chocolatey_foreman (
+    $chocolatey_internal_server = '',
+    $chocolatey_internal_only = false,
     $package_install = '',
     $package_latest  = '',
     $package_absent  = ''
@@ -62,6 +76,25 @@ class puppet_chocolatey_foreman (
 
         notify { 'puppet_chocolatey_foreman - Windows OS detected.': }
         include chocolatey
+
+        # checks to see if an internal server source is set.
+        if(!$chocolatey_internal_server.empty)
+        {
+          # Sets internal server settings and makes it the primary source
+          chocolateysource {'internal':
+            ensure   => present,
+            location => $chocolatey_internal_server,
+            priority => 1,
+          }
+
+          # Sets if required internal sources only.
+          if($chocolatey_internal_only == true)
+          {
+            chocolateysource {'chocolatey':
+              ensure => disabled,
+            }
+          }
+        }
 
         # Installs the application(s) listed if missing only
         if(!$package_install.empty)
