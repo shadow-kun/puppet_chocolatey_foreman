@@ -80,19 +80,26 @@ class puppet_chocolatey_foreman (
         # checks to see if an internal server source is set.
         if(!$chocolatey_internal_server.empty)
         {
+          # Sets if required internal sources only.
+          if($chocolatey_internal_only == true)
+          {
+            $chocolateysource = disabled
+          }
+          else
+          {
+            $chocolateysource = present
+          }
+
           # Sets internal server settings and makes it the primary source
           chocolateysource {'internal':
             ensure   => present,
             location => $chocolatey_internal_server,
             priority => 1,
           }
-
-          # Sets if required internal sources only.
-          if($chocolatey_internal_only == true)
-          {
-            chocolateysource {'chocolatey':
-              ensure => disabled,
-            }
+          chocolateysource {'chocolatey':
+            ensure   => $chocolateysource,
+            location => 'https://chocolatey.org/api/v2',
+            priority => 0,
           }
         }
 
