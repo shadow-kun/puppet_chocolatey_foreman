@@ -75,6 +75,7 @@ class puppet_chocolatey_foreman (
     if $facts['os']['family'] == 'windows' {
         include chocolatey
 
+
         # checks to see if an internal server source is set.
         if(!$chocolatey_internal_server.empty)
         {
